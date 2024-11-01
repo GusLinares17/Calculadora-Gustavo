@@ -1,0 +1,22 @@
+# Usa una imagen base de Perl con Apache
+FROM perl:5.32-apache
+
+# Instala módulos CGI necesarios
+RUN cpan install CGI
+
+# Copia el archivo HTML y CSS en el directorio adecuado
+COPY html/ /var/www/html/
+COPY css/ /var/www/html/css/
+
+# Copia el script Perl en el directorio CGI
+COPY cgi-bin/ /usr/lib/cgi-bin/
+RUN chmod +x /usr/lib/cgi-bin/*.pl
+
+# Habilitar mod_cgi en Apache para ejecutar scripts CGI
+RUN a2enmod cgi
+
+# Exponer el puerto 80 para acceder al sitio web
+EXPOSE 80
+
+# Iniciar Apache en modo foreground
+CMD ["apache2-foreground"]
