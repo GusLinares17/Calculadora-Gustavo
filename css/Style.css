@@ -3,7 +3,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	heighr: 100 vh;
+	height: 100 vh;
 	background-color: #f0f0f0
 	margin: 0;
 }
@@ -43,6 +43,7 @@ input, button {
     	box-sizing: border-box;
     	text-align: right; 
 }
+
 button {
     	background-color: #e0e0e0;
     	color: #333;

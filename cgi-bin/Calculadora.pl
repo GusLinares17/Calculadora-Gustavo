@@ -6,6 +6,8 @@ use utf8;
 
 my $cgi = CGI->new;
 
+print $cgi->header('text/html; charset=UTF-8');
+
 sub manejar_calculo {
     my $expresion = $cgi->param('expresion') // '';  
     my $resultado;
