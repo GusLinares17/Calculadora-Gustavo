@@ -10,6 +10,9 @@ RUN apt-get update && \
 RUN echo "LoadModule cgi_module /usr/lib/apache2/modules/mod_cgi.so" \
     >> /etc/apache2/apache2.conf
 
+# Configura ServerName para evitar advertencias
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 # Copia los archivos HTML y CSS en el directorio adecuado
 COPY html/ /var/www/html/
 COPY css/ /var/www/html/css/
@@ -23,4 +26,4 @@ EXPOSE 80
 
 # Iniciar Apache en modo foreground
 CMD ["apache2ctl", "-D", "FOREGROUND"]
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
