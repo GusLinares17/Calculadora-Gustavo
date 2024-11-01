@@ -3,10 +3,10 @@ FROM perl:5.32
 
 # Instala Apache y módulos necesarios
 RUN apt-get update && \
-    apt-get install -y apache2 libapache2-mod-perl2 && \
-    cpan install CGI
+    apt-get install -y apache2 libapache2-mod-perl2 libcgi-pm-perl && \
+    rm -rf /var/lib/apt/lists/*
 
-# Habilita el módulo CGI
+# Habilita el módulo CGI en Apache
 RUN a2enmod cgi
 
 # Configura ServerName para evitar advertencias
@@ -24,7 +24,7 @@ Require all granted\n\
 COPY html/ /var/www/html/
 COPY css/ /var/www/html/css/
 
-# Copia el script Perl en el directorio CGI
+# Copia el script Perl en el directorio CGI y da permisos de ejecución
 COPY cgi-bin/ /usr/lib/cgi-bin/
 RUN chmod +x /usr/lib/cgi-bin/*.pl
 
@@ -33,3 +33,4 @@ EXPOSE 80
 
 # Iniciar Apache en modo foreground
 CMD ["apache2ctl", "-D", "FOREGROUND"]
+
