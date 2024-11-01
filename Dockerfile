@@ -6,12 +6,19 @@ RUN apt-get update && \
     apt-get install -y apache2 libapache2-mod-perl2 && \
     cpan install CGI
 
-# Habilita CGI manualmente
-RUN echo "LoadModule cgi_module /usr/lib/apache2/modules/mod_cgi.so" \
-    >> /etc/apache2/apache2.conf
+# Habilita el módulo CGI
+RUN a2enmod cgi
 
 # Configura ServerName para evitar advertencias
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Configura el directorio CGI en Apache
+RUN echo "<Directory \"/usr/lib/cgi-bin\">\n\
+AllowOverride None\n\
+Options +ExecCGI\n\
+AddHandler cgi-script .pl\n\
+Require all granted\n\
+</Directory>" >> /etc/apache2/apache2.conf
 
 # Copia los archivos HTML y CSS en el directorio adecuado
 COPY html/ /var/www/html/
@@ -26,4 +33,3 @@ EXPOSE 80
 
 # Iniciar Apache en modo foreground
 CMD ["apache2ctl", "-D", "FOREGROUND"]
-
