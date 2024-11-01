@@ -1,22 +1,18 @@
 #!/usr/bin/perl -w
 use strict;
 use warnings;
-use CGI;
 use utf8;
+use CGI;
+binmode(STDOUT, ":encoding(UTF-8)");
 
 my $cgi = CGI->new;
 
-# Imprimir el encabezado de tipo de contenido
-print $cgi->header('text/html; charset=UTF-8');
+print $cgi->header(-type => "text/html", -charset => "UTF-8");
 
-# Capturar la expresión ingresada
 my $expresion = $cgi->param('expresion') // '';
-
-# Inicializar variable para el resultado
 my $resultado;
 
-# Verificar si se ingresó una expresión válida y evaluarla
-if ($expresion ne '') {
+if (defined $expresion && $expresion ne '') {
     if ($expresion =~ /^[\d\+\-\*\/\(\) ]+$/) {
         eval {
             $resultado = eval $expresion;
@@ -31,7 +27,6 @@ if ($expresion ne '') {
     $resultado = "Por favor, ingrese una expresión.";
 }
 
-# Generar la página HTML con el resultado
 print <<HTML;
 <!DOCTYPE html>
 <html lang="es">
@@ -49,7 +44,6 @@ print <<HTML;
         </form>
 HTML
 
-# Mostrar el resultado o el mensaje adecuado
 if (defined $resultado) {
     print "<h2>Resultado: $resultado</h2>";
 }
@@ -62,3 +56,4 @@ print <<HTML;
 </body>
 </html>
 HTML
+
